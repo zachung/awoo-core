@@ -1,1 +1,1 @@
-# Awoo-core
+# awoo-core
