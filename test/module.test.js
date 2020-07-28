@@ -22,5 +22,8 @@ describe('測試模組載入', () => {
     if (!Symbols.Blocks || Symbols.Blocks.length <= 0) {
       throw new Error('Symbols 載入失敗')
     }
+    if (!Symbols.Blocks[0]) {
+      throw new Error('Symbols index 0 not specific')
+    }
   })
 })

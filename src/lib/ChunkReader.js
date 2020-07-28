@@ -1,4 +1,4 @@
-import { Blocks } from '../data/Symbols'
+import Symbols from '../data/Symbols'
 import Item from './Item'
 
 const newItem = (symbol, x, y) => {
@@ -18,7 +18,7 @@ class ChunkReader {
             continue
           }
           items[id].forEach(item => {
-            cb(newItem(Blocks[id], ...item))
+            cb(newItem(Symbols.Blocks[id], ...item))
           })
         }
       })
