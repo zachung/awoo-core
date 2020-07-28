@@ -1,3 +1,13 @@
-exports.printMsg = function () {
-  console.log('This is a message from the demo package')
+import Symbols from './data/Symbols'
+import Chunk from './lib/Chunk'
+import Item from './lib/Item'
+import Layer from './lib/Layer'
+import Stage from './lib/Stage'
+
+export default {
+  Symbols,
+  Chunk,
+  Item,
+  Layer,
+  Stage
 }
