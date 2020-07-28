@@ -4,7 +4,7 @@ import Item from './lib/Item'
 import Layer from './lib/Layer'
 import Stage from './lib/Stage'
 
-export default {
+export {
   Symbols,
   Chunk,
   Item,
