@@ -5,6 +5,8 @@ const chunkLoc = (x, y) => {
 }
 
 const ChunkSize = 32
+const round = p => ((p % ChunkSize) + ChunkSize) % ChunkSize
+const chunkOffset = p => Math.floor(p / ChunkSize)
 
 /**
  * @property {Number} viewSize
@@ -20,7 +22,7 @@ class Stage {
     for (let x = 0; x < viewSize; x++) {
       this.map[x] = []
       for (let y = 0; y < viewSize; y++) {
-        this.map[x][y] = { symbol: '' }
+        this.map[x][y] = undefined
       }
     }
     this.viewSize = viewSize
@@ -53,8 +55,8 @@ class Stage {
   }
 
   changeChunk (x, y) {
-    const chunkX = Math.floor(x / ChunkSize)
-    const chunkY = Math.floor(y / ChunkSize)
+    const chunkX = chunkOffset(x)
+    const chunkY = chunkOffset(y)
     const curChunkInx = chunkLoc(chunkX, chunkY)
     if (this.curChunkInx !== curChunkInx) {
       this.curChunkInx = curChunkInx
@@ -82,20 +84,21 @@ class Stage {
     if (!chunkByLoc) {
       return
     }
-    return chunkByLoc.getItemByGlobalLoc(x, y)
+    return chunkByLoc.getItemByGlobalLoc(round(x), round(y))
   }
 
   getChunkByLoc (x, y) {
-    const chunkInx = chunkLoc(Math.floor(x / ChunkSize), Math.floor(y / ChunkSize))
+    const chunkInx = chunkLoc(chunkOffset(x), chunkOffset(y))
     return this.chunks[chunkInx]
   }
 
   move (chunk, item, x, y) {
-    const { x: preX, y: preY } = item.location
+    const preX = item.x
+    const preY = item.y
 
     return Promise.resolve()
       .then(() => {
-        this.getChunkByLoc(x, y).addItem(item, x, y)
+        this.getChunkByLoc(x, y).addItem(item, round(x), round(y))
         chunk.removeItem(item, preX, preY)
       })
   }

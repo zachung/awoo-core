@@ -2,9 +2,13 @@ import Item from './Item'
 import Layer from './Layer'
 import ChunkReader from './ChunkReader'
 
-const empty = new Item('')
+const newItem = (symbol, x, y) => {
+  const item = new Item(symbol)
+  item.setLocalPosition(x, y)
+  return item
+}
+
 const N = 32
-const round = p => ((p % N) + N) % N
 
 /**
  * 32*32 blocks
@@ -14,12 +18,16 @@ class Chunk {
   constructor (offsetX, offsetY) {
     const groundLayer = new Layer(N)
     const itemLayer = new Layer(N)
-    for (let r = 0; r < N; r++) {
-      for (let c = 0; c < N; c++) {
-        groundLayer.put(empty, r, c)
+
+    for (let x = 0; x < N; x++) {
+      for (let y = 0; y < N; y++) {
+        const empty = newItem('', x, y)
+        empty.chunk = this
+        groundLayer.put(empty, x, y)
       }
     }
 
+    this.chunkName = Chunk.getChunkName(offsetX, offsetY)
     this.groundLayer = groundLayer
     this.itemLayer = itemLayer
     this.offsetX = offsetX
@@ -31,13 +39,12 @@ class Chunk {
   }
 
   loadWorld () {
-    this.chunkName = Chunk.getChunkName(this.offsetX, this.offsetY)
     const worldReader = new ChunkReader()
     return worldReader.load(this.chunkName, item => this.addItem(item))
   }
 
   getItemByGlobalLoc (x, y) {
-    return this.getItem(round(x), round(y))
+    return this.getItem(x, y)
   }
 
   getItem (offsetX, offsetY) {
@@ -52,14 +59,14 @@ class Chunk {
   }
 
   addItem (item, x, y) {
-    x = x !== undefined ? x : item.location.x
-    y = y !== undefined ? y : item.location.y
-    this.itemLayer.put(item, round(x), round(y))
+    x = x !== undefined ? x : item.x
+    y = y !== undefined ? y : item.y
+    this.itemLayer.put(item, x, y)
     item.chunk = this
   }
 
   removeItem (item, x, y) {
-    this.itemLayer.remove(item, round(x), round(y))
+    this.itemLayer.remove(item, x, y)
   }
 
   move (item, x, y) {

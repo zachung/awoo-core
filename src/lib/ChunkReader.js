@@ -3,16 +3,16 @@ import Item from './Item'
 
 const newItem = (symbol, x, y) => {
   const item = new Item(symbol)
-  item.location = { x, y }
+  item.setLocalPosition(x, y)
   return item
 }
 
 class ChunkReader {
-  load (world, cb) {
-    return this.getJSON('world/' + world + '.json')
-      .then(world => {
+  load (chunk, cb) {
+    return this.getJSON('world/' + chunk + '.json')
+      .then(chunk => {
         // load items
-        const items = world.items
+        const items = chunk.items
         for (const id in items) {
           if (!items.hasOwnProperty(id)) {
             continue
