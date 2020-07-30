@@ -74,9 +74,11 @@ class Chunk {
     item.chunk = this
   }
 
-  removeItem (item, x, y) {
-    this.itemLayer.remove(x, y)
-    this.itemLayer.isDirty = true
+  removeItem (x, y) {
+    const removed = this.itemLayer.remove(x, y)
+    if (removed !== undefined) {
+      this.itemLayer.isDirty = true
+    }
   }
 
   move (item, x, y) {
@@ -89,12 +91,12 @@ class Chunk {
     return Math.abs(offsetX) + WE + Math.abs(offsetY) + NS
   }
 
-  get isDirty() {
+  get isDirty () {
     // 目前只有 itemLayer 會變動
     return this.itemLayer.isDirty
   }
 
-  set isDirty(isDirty) {
+  set isDirty (isDirty) {
     this.itemLayer.isDirty = isDirty
   }
 

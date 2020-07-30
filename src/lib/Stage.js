@@ -99,7 +99,7 @@ class Stage {
     return Promise.resolve()
       .then(() => {
         this.getChunkByLoc(x, y).addItem(item, round(x), round(y))
-        chunk.removeItem(item, preX, preY)
+        chunk.removeItem(preX, preY)
       })
   }
 

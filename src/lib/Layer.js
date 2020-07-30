@@ -20,9 +20,15 @@ class Layer {
     this.map.splice(inx, 1, item)
   }
 
+  /**
+   * remove item which location
+   * @param x
+   * @param y
+   * @returns {any} the item been removed
+   */
   remove (x, y) {
     const inx = y * this.n + x
-    this.map.splice(inx, 1, undefined)
+    return this.map.splice(inx, 1, undefined)[0]
   }
 
   export () {

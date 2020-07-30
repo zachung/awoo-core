@@ -38,7 +38,7 @@ class Item {
   }
 
   removeSelf () {
-    this.chunk.removeItem(this, this.x, this.y)
+    this.chunk.removeItem(this.x, this.y)
   }
 
   /**
