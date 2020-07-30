@@ -3,14 +3,14 @@ const round = p => ((p % ChunkSize) + ChunkSize) % ChunkSize
 
 /**
  * @property {Chunk} chunk
- * @property {string} symbol 顯示符號
  * @property {string} color 字體顏色
  * @property {string} bgColor 背景顏色
  */
 class Item {
-  constructor ({ symbol, type, id, x, y }) {
+  constructor ({ type, id, x, y }) {
+    this.type = type
+    this.id = id
     this.chunk = undefined
-    this.symbol = symbol
     if (x !== undefined) {
       this.setLocalPosition(x, y)
     }
@@ -34,9 +34,6 @@ class Item {
       .move(this, x, y)
       .then(() => {
         this.setLocalPosition(round(x), round(y))
-      })
-      .catch(err => {
-        console.log(err.message)
       })
   }
 

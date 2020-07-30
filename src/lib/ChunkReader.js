@@ -1,7 +1,5 @@
-import Symbols from '../data/Symbols'
 import Item from './Item'
 
-const TypeKeys = ['Grounds', 'Blocks', 'Items']
 const kX = 0
 const kY = 1
 
@@ -21,7 +19,8 @@ const createLayerLoader = cb => {
           type = 1
         }
         const item = new Item({
-          symbol: Symbols[TypeKeys[type]][id],
+          type,
+          id,
           x: props[kX],
           y: props[kY]
         })

@@ -1,12 +1,9 @@
 class Layer {
   constructor (n) {
-    const map = []
     const N = n * n
-    for (let r = 0; r < N; r++) {
-      map.push(undefined)
-    }
-    this.map = map
+    this.map = new Array(N).fill(undefined)
     this.n = n
+    this.isDirty = false
   }
 
   getItem (x, y) {
@@ -18,7 +15,7 @@ class Layer {
     const preItem = this.map[inx]
     if (preItem) {
       // TODO: 與目標交互
-      throw Error('stuck by ' + preItem.symbol)
+      throw Error('stuck by >' + preItem.type + ':' + preItem.id + '<')
     }
     this.map.splice(inx, 1, item)
   }
@@ -26,6 +23,21 @@ class Layer {
   remove (x, y) {
     const inx = y * this.n + x
     this.map.splice(inx, 1, undefined)
+  }
+
+  export () {
+    const arr = {}
+    this.map.forEach(item => {
+      if (!item || item.type === undefined) {
+        return
+      }
+      const key = item.type + ':' + item.id
+      if (!arr[key]) {
+        arr[key] = []
+      }
+      arr[key].push([item.x, item.y])
+    })
+    return arr
   }
 }
 

@@ -102,6 +102,15 @@ class Stage {
         chunk.removeItem(item, preX, preY)
       })
   }
+
+  save (cb) {
+    return Promise.resolve(Object.values(this.chunks)
+      .filter(chunk => chunk.isDirty))
+      .then(cb)
+      .then(chunks => {
+        chunks.forEach(chunk => chunk.isDirty = false)
+      })
+  }
 }
 
 export default Stage
