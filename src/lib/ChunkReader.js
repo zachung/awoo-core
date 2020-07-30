@@ -1,25 +1,46 @@
 import Symbols from '../data/Symbols'
 import Item from './Item'
 
-const newItem = (symbol, x, y) => {
-  const item = new Item(symbol)
-  item.setLocalPosition(x, y)
-  return item
+const TypeKeys = ['Grounds', 'Blocks', 'Items']
+const kX = 0
+const kY = 1
+
+const createLayerLoader = cb => {
+  return (layer, items) => {
+    // load items
+    for (const key in items) {
+      if (!items.hasOwnProperty(key)) {
+        continue
+      }
+      items[key].forEach(props => {
+        // explode key, format: {type}:{id}
+        let [type, id] = key.split(':')
+        if (id === undefined) {
+          // 向下相容
+          id = type
+          type = 1
+        }
+        const item = new Item({
+          symbol: Symbols[TypeKeys[type]][id],
+          x: props[kX],
+          y: props[kY]
+        })
+        cb(layer, item)
+      })
+    }
+  }
 }
 
 class ChunkReader {
   load (chunk, cb) {
+    const loader = createLayerLoader(cb)
     return this.getJSON('world/' + chunk + '.json')
       .then(chunk => {
-        // load items
-        const items = chunk.items
-        for (const id in items) {
-          if (!items.hasOwnProperty(id)) {
+        for (const layer in chunk) {
+          if (!chunk.hasOwnProperty(layer)) {
             continue
           }
-          items[id].forEach(item => {
-            cb(newItem(Symbols.Blocks[id], ...item))
-          })
+          loader(layer, chunk[layer])
         }
       })
   }

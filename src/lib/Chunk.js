@@ -2,34 +2,31 @@ import Item from './Item'
 import Layer from './Layer'
 import ChunkReader from './ChunkReader'
 
-const newItem = (symbol, x, y) => {
-  const item = new Item(symbol)
-  item.setLocalPosition(x, y)
-  return item
-}
-
 const N = 32
+
+const initGroupLayer = chunk => {
+  const groundLayer = new Layer(N)
+  for (let x = 0; x < N; x++) {
+    for (let y = 0; y < N; y++) {
+      const empty = new Item({ symbol: '', x, y })
+      empty.chunk = chunk
+      groundLayer.put(empty, x, y)
+    }
+  }
+  return groundLayer
+}
 
 /**
  * 32*32 blocks
  * @property {Stage} stage
+ * @property {Layer} groundLayer
+ * @property {Layer} itemLayer
  */
 class Chunk {
   constructor (offsetX, offsetY) {
-    const groundLayer = new Layer(N)
-    const itemLayer = new Layer(N)
-
-    for (let x = 0; x < N; x++) {
-      for (let y = 0; y < N; y++) {
-        const empty = newItem('', x, y)
-        empty.chunk = this
-        groundLayer.put(empty, x, y)
-      }
-    }
-
     this.chunkName = Chunk.getChunkName(offsetX, offsetY)
-    this.groundLayer = groundLayer
-    this.itemLayer = itemLayer
+    this.groundLayer = initGroupLayer(this)
+    this.itemLayer = new Layer(N)
     this.offsetX = offsetX
     this.offsetY = offsetY
   }
@@ -40,7 +37,15 @@ class Chunk {
 
   loadWorld () {
     const worldReader = new ChunkReader()
-    return worldReader.load(this.chunkName, item => this.addItem(item))
+    return worldReader.load(this.chunkName, (layer, item) => {
+      if (layer === 'grounds') {
+        item.chunk = this
+        this.groundLayer.remove(item.x, item.y)
+        this.groundLayer.put(item, item.x, item.y)
+        return
+      }
+      this.addItem(item)
+    })
   }
 
   getItemByGlobalLoc (x, y) {
@@ -66,7 +71,7 @@ class Chunk {
   }
 
   removeItem (item, x, y) {
-    this.itemLayer.remove(item, x, y)
+    this.itemLayer.remove(x, y)
   }
 
   move (item, x, y) {
@@ -77,6 +82,10 @@ class Chunk {
     const WE = offsetX >= 0 ? 'E' : 'W'
     const NS = offsetY < 0 ? 'N' : 'S'
     return Math.abs(offsetX) + WE + Math.abs(offsetY) + NS
+  }
+
+  export () {
+
   }
 }
 

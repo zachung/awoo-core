@@ -23,7 +23,7 @@ class Layer {
     this.map.splice(inx, 1, item)
   }
 
-  remove (item, x, y) {
+  remove (x, y) {
     const inx = y * this.n + x
     this.map.splice(inx, 1, undefined)
   }

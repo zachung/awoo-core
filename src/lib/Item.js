@@ -8,9 +8,12 @@ const round = p => ((p % ChunkSize) + ChunkSize) % ChunkSize
  * @property {string} bgColor 背景顏色
  */
 class Item {
-  constructor (symbol) {
+  constructor ({ symbol, type, id, x, y }) {
     this.chunk = undefined
     this.symbol = symbol
+    if (x !== undefined) {
+      this.setLocalPosition(x, y)
+    }
   }
 
   setLocalPosition (x, y) {
@@ -35,6 +38,18 @@ class Item {
       .catch(err => {
         console.log(err.message)
       })
+  }
+
+  removeSelf () {
+    this.chunk.removeItem(this, this.x, this.y)
+  }
+
+  /**
+   *
+   * @param {Chunk} chunk
+   */
+  setIn (chunk) {
+    chunk.addItem(this)
   }
 }
 
