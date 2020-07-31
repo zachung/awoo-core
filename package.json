@@ -2,7 +2,7 @@
   "name": "awoo-core",
   "version": "1.0.4",
   "description": "core library for awoo",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --require @babel/register",
     "build": "babel src --out-dir lib"
