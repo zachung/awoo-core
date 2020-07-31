@@ -35,9 +35,12 @@ class Chunk {
     this.stage = stage
   }
 
-  loadWorld () {
-    const worldReader = new ChunkReader()
-    return worldReader.load(this.chunkName, (layer, item) => {
+  /**
+   * @param {ChunkReader} reader
+   * @returns {PromiseLike<any> | Promise<any>}
+   */
+  loadWorld (reader) {
+    return reader.load(this.chunkName, (layer, item) => {
       if (layer === 'grounds') {
         item.chunk = this
         this.groundLayer.remove(item.x, item.y)

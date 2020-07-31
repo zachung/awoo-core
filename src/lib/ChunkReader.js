@@ -33,7 +33,7 @@ const createLayerLoader = cb => {
 class ChunkReader {
   load (chunk, cb) {
     const loader = createLayerLoader(cb)
-    return this.getJSON('world/' + chunk + '.json')
+    return this.fetchData(chunk)
       .then(chunk => {
         for (const layer in chunk) {
           if (!chunk.hasOwnProperty(layer)) {
@@ -44,21 +44,8 @@ class ChunkReader {
       })
   }
 
-  getJSON (url) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.responseType = 'json'
-      xhr.onload = () => {
-        const status = xhr.status
-        if (status === 200) {
-          resolve(xhr.response)
-        } else {
-          reject(status, xhr.response)
-        }
-      }
-      xhr.send()
-    })
+  fetchData (chunk) {
+    throw Error('you must implement this method')
   }
 }
 

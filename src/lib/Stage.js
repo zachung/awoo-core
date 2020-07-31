@@ -11,11 +11,13 @@ const chunkOffset = p => Math.floor(p / ChunkSize)
 /**
  * @property {Number} viewSize
  * @property {Object} cameraDelta 鏡頭偏移(距離左上角距離)
+ * @preserve {ChunkReader} chunkReader
  */
 class Stage {
-  constructor ({ viewSize, cameraDelta }) {
+  constructor ({ viewSize, cameraDelta, chunkReader }) {
     this.loading = false
     this.chunks = {}
+    this.chunkReader = chunkReader
 
     this.map = []
     // init fallback
@@ -69,7 +71,7 @@ class Stage {
         if (!this.chunks[inx]) {
           const chunk = new Chunk(x, y)
           this.addChunk(chunk)
-          loaders.push(chunk.loadWorld())
+          loaders.push(chunk.loadWorld(this.chunkReader))
         }
       }
     }
