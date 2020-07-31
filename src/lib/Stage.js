@@ -84,7 +84,7 @@ class Stage {
     if (!chunkByLoc) {
       return
     }
-    return chunkByLoc.getItemByGlobalLoc(round(x), round(y))
+    return chunkByLoc.getItem(round(x), round(y))
   }
 
   getChunkByLoc (x, y) {

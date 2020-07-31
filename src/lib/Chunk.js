@@ -51,10 +51,6 @@ class Chunk {
     })
   }
 
-  getItemByGlobalLoc (x, y) {
-    return this.getItem(x, y)
-  }
-
   getItem (offsetX, offsetY) {
     let item = undefined
     ;[this.itemLayer, this.groundLayer].some(layer => {
