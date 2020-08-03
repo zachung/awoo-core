@@ -32,7 +32,7 @@ class Chunk {
   }
 
   static fromName (chunkName) {
-    const re = /(\d+)(\w)(\d+)(\w)/g
+    const re = /(\d+)(\w)(\d+)(\w)/
     let [, offsetX, xd, offsetY, yd] = chunkName.match(re)
     offsetX = xd === 'W' ? -offsetX : offsetX
     offsetY = yd === 'S' ? -offsetY : offsetY
