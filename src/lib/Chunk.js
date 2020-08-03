@@ -31,6 +31,14 @@ class Chunk {
     this.offsetY = offsetY
   }
 
+  static fromName (chunkName) {
+    const re = /(\d+)(\w)(\d+)(\w)/g
+    let [, offsetX, xd, offsetY, yd] = chunkName.match(re)
+    offsetX = xd === 'W' ? -offsetX : offsetX
+    offsetY = yd === 'S' ? -offsetY : offsetY
+    return new Chunk(offsetX, offsetY)
+  }
+
   setStage (stage) {
     this.stage = stage
   }
