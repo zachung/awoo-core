@@ -58,6 +58,9 @@ class Chunk {
   }
 
   reloadWorld (reader, chunkData) {
+    // TODO: 重刷整個chunk太浪費效能，必須優化
+    this.groundLayer = initGroupLayer(this)
+    this.itemLayer = new Layer(N)
     reader.fromData(chunkData, (layer, item) => {
       if (layer === 'grounds') {
         item.chunk = this
