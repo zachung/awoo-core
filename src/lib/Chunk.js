@@ -18,7 +18,6 @@ const initGroupLayer = chunk => {
 
 /**
  * 32*32 blocks
- * @property {Stage} stage
  * @property {Layer} groundLayer
  * @property {Layer} itemLayer
  */
@@ -39,10 +38,6 @@ class Chunk {
     return new Chunk(offsetX, offsetY)
   }
 
-  setStage (stage) {
-    this.stage = stage
-  }
-
   /**
    * @param {ChunkReader} reader
    * @returns {PromiseLike<any> | Promise<any>}
@@ -58,6 +53,23 @@ class Chunk {
       this.addItem(item)
     }).then(() => {
       // 初始載入不需要關注
+      this.itemLayer.isDirty = false
+    })
+  }
+
+  reloadWorld (reader, chunkData) {
+    reader.fromData(chunkData, (layer, item) => {
+      if (layer === 'grounds') {
+        item.chunk = this
+        this.groundLayer.remove(item.x, item.y)
+        this.groundLayer.put(item, item.x, item.y)
+        return
+      }
+      item.chunk = this
+      this.itemLayer.remove(item.x, item.y)
+      this.itemLayer.put(item, item.x, item.y)
+    }).then(() => {
+      // reload 不需要關注
       this.itemLayer.isDirty = false
     })
   }
@@ -86,10 +98,6 @@ class Chunk {
     if (removed !== undefined) {
       this.itemLayer.isDirty = true
     }
-  }
-
-  move (item, x, y) {
-    return this.stage.move(this, item, x, y)
   }
 
   static getChunkName (offsetX, offsetY) {

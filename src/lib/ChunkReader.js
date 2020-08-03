@@ -32,20 +32,22 @@ const createLayerLoader = cb => {
 
 class ChunkReader {
   load (chunk, cb) {
-    const loader = createLayerLoader(cb)
     return this.fetchData(chunk)
-      .then(chunk => {
-        for (const layer in chunk) {
-          if (!chunk.hasOwnProperty(layer)) {
-            continue
-          }
-          loader(layer, chunk[layer])
-        }
-      })
+      .then(chunkData => this.fromData(chunkData, cb))
   }
 
   fetchData (chunk) {
     throw Error('you must implement this method')
+  }
+
+  fromData (chunkData, cb) {
+    const loader = createLayerLoader(cb)
+    for (const layer in chunkData) {
+      if (!chunkData.hasOwnProperty(layer)) {
+        continue
+      }
+      loader(layer, chunkData[layer])
+    }
   }
 }
 

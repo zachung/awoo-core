@@ -29,14 +29,6 @@ class Item {
     return this.chunk.offsetY * ChunkSize + this.y
   }
 
-  move (x, y) {
-    return this.chunk
-      .move(this, x, y)
-      .then(() => {
-        this.setLocalPosition(round(x), round(y))
-      })
-  }
-
   removeSelf () {
     this.chunk.removeItem(this.x, this.y)
   }

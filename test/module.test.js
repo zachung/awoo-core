@@ -1,4 +1,4 @@
-const { Chunk, Item, Layer, Stage } = require('../src/index')
+const { Chunk, Item, Layer } = require('../src/index')
 
 describe('測試模組載入', () => {
   it('各項載入', () => {
@@ -10,9 +10,6 @@ describe('測試模組載入', () => {
     }
     if (!Layer) {
       throw new Error('Layer 載入失敗')
-    }
-    if (!Stage) {
-      throw new Error('Stage 載入失敗')
     }
   })
   it('chunk load', () => {
