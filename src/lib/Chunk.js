@@ -68,10 +68,9 @@ class Chunk {
       item.chunk = this
       this.itemLayer.remove(item.x, item.y)
       this.itemLayer.put(item, item.x, item.y)
-    }).then(() => {
-      // reload 不需要關注
-      this.itemLayer.isDirty = false
     })
+    // reload 不需要關注
+    this.itemLayer.isDirty = false
   }
 
   getItem (offsetX, offsetY) {
