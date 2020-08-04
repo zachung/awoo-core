@@ -13,10 +13,11 @@ class Item {
    * @param {ItemData} data
    */
   constructor (data) {
-    const { type, id, x, y } = data
+    const { type, id, x, y, props } = data
     this.type = type
     this.id = id
     this.chunk = undefined
+    this.props = props || {}
     if (x !== undefined) {
       this.setLocalPosition(x, y)
     }
@@ -53,6 +54,7 @@ class Item {
       id: this.id,
       x: this.x,
       y: this.y,
+      props: this.props,
       chunkName: this.chunk ? this.chunk.chunkName : undefined
     }
   }

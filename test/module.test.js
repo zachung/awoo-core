@@ -14,19 +14,19 @@ describe('測試模組載入', () => {
   })
   it('chunk load', () => {
     let chunk = Chunk.fromName('0E0S')
-    if (chunk.offsetX !== 0 && chunk.offsetY !== 0) {
+    if (chunk.offsetX !== 0 && chunk.offsetY !== 0 || chunk.chunkName !== '0E0S') {
       throw new Error('Chunk 從名稱 0E0S 載入失敗')
     }
     chunk = Chunk.fromName('1E1S')
-    if (chunk.offsetX !== 1 && chunk.offsetY !== 1) {
+    if (chunk.offsetX !== 1 || chunk.offsetY !== 1 || chunk.chunkName !== '1E1S') {
       throw new Error('Chunk 從名稱 1E1S 載入失敗')
     }
     chunk = Chunk.fromName('1W1N')
-    if (chunk.offsetX !== -1 && chunk.offsetY !== -1) {
+    if (chunk.offsetX !== -1 && chunk.offsetY !== -1 || chunk.chunkName !== '1W1N') {
       throw new Error('Chunk 從名稱 1W1N 載入失敗')
     }
     chunk = Chunk.fromName('1W1S')
-    if (chunk.offsetX !== -1 && chunk.offsetY !== 1) {
+    if (chunk.offsetX !== -1 && chunk.offsetY !== 1 || chunk.chunkName !== '1W1S') {
       throw new Error('Chunk 從名稱 1W1S 載入失敗')
     }
   })

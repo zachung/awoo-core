@@ -4,6 +4,7 @@
  * @property {number} x
  * @property {number} y
  * @property {string} chunkName
+ * @property {Object} props
  */
 class ItemData {}
 
