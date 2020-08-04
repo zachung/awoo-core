@@ -1,5 +1,6 @@
+import ItemData from './ItemData'
+
 const ChunkSize = 32
-const round = p => ((p % ChunkSize) + ChunkSize) % ChunkSize
 
 /**
  * @property {Chunk} chunk
@@ -7,7 +8,12 @@ const round = p => ((p % ChunkSize) + ChunkSize) % ChunkSize
  * @property {string} bgColor 背景顏色
  */
 class Item {
-  constructor ({ type, id, x, y }) {
+  /**
+   *
+   * @param {ItemData} data
+   */
+  constructor (data) {
+    const { type, id, x, y } = data
     this.type = type
     this.id = id
     this.chunk = undefined
@@ -39,6 +45,24 @@ class Item {
    */
   setIn (chunk) {
     chunk.addItem(this)
+  }
+
+  toData () {
+    return {
+      type: this.type,
+      id: this.id,
+      x: this.x,
+      y: this.y,
+      chunkName: this.chunk ? this.chunk.chunkName : undefined
+    }
+  }
+
+  /**
+   * @param {ItemData} data
+   * @returns {Item}
+   */
+  static fromData (data) {
+    return new Item(data)
   }
 }
 
