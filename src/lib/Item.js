@@ -6,6 +6,7 @@ const ChunkSize = 32
  * @property {Chunk} chunk
  * @property {string} color 字體顏色
  * @property {string} bgColor 背景顏色
+ * @property {Object} props 屬性
  */
 class Item {
   /**
