@@ -34,20 +34,21 @@ describe('測試模組載入', () => {
 
 describe('測試 Item', () => {
   it('建構&解構', () => {
-    const item = new Item({ type: 1, id: 1, x: 0, y: 15 })
+    const item = new Item({ type: 1, id: 1, x: 0, y: 15, props: { a: 'foo' } })
     const chunk = new Chunk(0, 0)
-    let { type, id, x, y, chunkName } = item.toData()
-    if (type !== 1 || id !== 1 || x !== 0 || y !== 15 || chunkName !== undefined) {
+    let { key, props: [x, y, chunkName, props] } = item.toData()
+    if (key !== '1:1' || x !== 0 || y !== 15 || chunkName !== undefined || props.a !== 'foo') {
       throw new Error('Item 解構失敗')
     }
     item.chunk = chunk
-    let { chunkName: newChunkName } = item.toData()
+    let { props: [, , newChunkName, {}] } = item.toData()
     if (newChunkName !== '0E0S') {
       throw new Error('Item chunkName 解構失敗')
     }
     const newItem = Item.fromData(item.toData())
     if (newItem.type !== 1 || newItem.id !== 1 || newItem.x !== 0 || newItem.y !== 15) {
-      throw new Error('Item 建構失敗')
+      console.log(newItem)
+      throw new Error('Item 重建失敗')
     }
   })
 })

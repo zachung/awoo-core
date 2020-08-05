@@ -49,15 +49,11 @@ class Item {
     chunk.addItem(this)
   }
 
+  /**
+   * @return {ItemData}
+   */
   toData () {
-    return {
-      type: this.type,
-      id: this.id,
-      x: this.x,
-      y: this.y,
-      props: this.props,
-      chunkName: this.chunk ? this.chunk.chunkName : undefined
-    }
+    return ItemData.toJson(this)
   }
 
   /**
@@ -65,7 +61,7 @@ class Item {
    * @returns {Item}
    */
   static fromData (data) {
-    return new Item(data)
+    return ItemData.fromJson(data)
   }
 }
 

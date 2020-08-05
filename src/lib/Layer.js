@@ -41,7 +41,7 @@ class Layer {
       if (!arr[key]) {
         arr[key] = []
       }
-      arr[key].push([item.x, item.y])
+      arr[key].push([item.x, item.y, item.props])
     })
     return arr
   }

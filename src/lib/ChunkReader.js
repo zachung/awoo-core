@@ -1,7 +1,4 @@
-import Item from './Item'
-
-const kX = 0
-const kY = 1
+import ItemData from './ItemData'
 
 const createLayerLoader = cb => {
   return (layer, items) => {
@@ -11,20 +8,7 @@ const createLayerLoader = cb => {
         continue
       }
       items[key].forEach(props => {
-        // explode key, format: {type}:{id}
-        let [type, id] = key.split(':')
-        if (id === undefined) {
-          // 向下相容
-          id = type
-          type = 1
-        }
-        const item = new Item({
-          type,
-          id,
-          x: props[kX],
-          y: props[kY]
-        })
-        cb(layer, item)
+        cb(layer, ItemData.fromJson({ key, props }))
       })
     }
   }
@@ -32,8 +16,9 @@ const createLayerLoader = cb => {
 
 class ChunkReader {
   load (chunk, cb) {
-    return this.fetchData(chunk)
-      .then(chunkData => this.fromData(chunkData, cb))
+    return this.fetchData(chunk).then(chunkData =>
+      this.fromData(chunkData, cb)
+    )
   }
 
   fetchData (chunk) {

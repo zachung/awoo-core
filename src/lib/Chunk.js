@@ -57,25 +57,6 @@ class Chunk {
     })
   }
 
-  reloadWorld (reader, chunkData) {
-    // TODO: 重刷整個chunk太浪費效能，必須優化
-    this.groundLayer = initGroupLayer(this)
-    this.itemLayer = new Layer(N)
-    reader.fromData(chunkData, (layer, item) => {
-      if (layer === 'grounds') {
-        item.chunk = this
-        this.groundLayer.remove(item.x, item.y)
-        this.groundLayer.put(item, item.x, item.y)
-        return
-      }
-      item.chunk = this
-      this.itemLayer.remove(item.x, item.y)
-      this.itemLayer.put(item, item.x, item.y)
-    })
-    // reload 不需要關注
-    this.itemLayer.isDirty = false
-  }
-
   getItem (offsetX, offsetY) {
     let item = undefined
     ;[this.itemLayer, this.groundLayer].some(layer => {
