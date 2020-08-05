@@ -1,4 +1,4 @@
-import ItemData from './ItemData'
+import Item from './Item'
 
 const createLayerLoader = (chunkName, cb) => {
   return (layer, items) => {
@@ -8,7 +8,7 @@ const createLayerLoader = (chunkName, cb) => {
         continue
       }
       items[key].forEach(props => {
-        cb(layer, ItemData.fromJson([key, chunkName, ...props]))
+        cb(layer, Item.fromData([key, chunkName, ...props]))
       })
     }
   }

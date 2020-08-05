@@ -1,6 +1,4 @@
-import ItemData from '../src/lib/ItemData'
-
-const { Chunk, Item, Layer } = require('../src/index')
+const { Chunk, Item, Layer, ItemData, ChunkReader } = require('../src/index')
 
 describe('測試模組載入', () => {
   it('各項載入', () => {
@@ -12,6 +10,12 @@ describe('測試模組載入', () => {
     }
     if (!Layer) {
       throw new Error('Layer 載入失敗')
+    }
+    if (!ItemData) {
+      throw new Error('ItemData 載入失敗')
+    }
+    if (!ChunkReader) {
+      throw new Error('ChunkReader 載入失敗')
     }
   })
   it('chunk load', () => {
@@ -49,7 +53,10 @@ describe('測試 Item', () => {
     }
     const newItem = Item.fromData(item.toData())
     if (newItem.type !== 1 || newItem.id !== 1 || newItem.x !== 0 || newItem.y !== 15) {
-      console.log(newItem)
+      throw new Error('Item 重建失敗')
+    }
+    const airItem = Item.fromData(['0:0', '', 14, 14, {}])
+    if (airItem.type !== 0 || airItem.id !== 0 || airItem.x !== 14 || airItem.y !== 14) {
       throw new Error('Item 重建失敗')
     }
   })
