@@ -1,6 +1,6 @@
-import Item from './Item'
 import Layer from './Layer'
 import ChunkReader from './ChunkReader'
+import ItemData from './ItemData'
 
 const N = 32
 
@@ -8,7 +8,7 @@ const initGroupLayer = chunk => {
   const groundLayer = new Layer(N)
   for (let x = 0; x < N; x++) {
     for (let y = 0; y < N; y++) {
-      const empty = new Item({ x, y })
+      const empty = ItemData.fromJson(['', '', x, y, {}])
       empty.chunk = chunk
       groundLayer.put(empty, x, y)
     }

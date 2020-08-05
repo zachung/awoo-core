@@ -3,16 +3,14 @@ import ItemData from './ItemData'
 const ChunkSize = 32
 
 /**
+ * @property {number} type
+ * @property {number} id
  * @property {Chunk} chunk
  * @property {string} color 字體顏色
  * @property {string} bgColor 背景顏色
  * @property {Object} props 屬性
  */
 class Item {
-  /**
-   *
-   * @param {ItemData} data
-   */
   constructor (data) {
     const { type, id, x, y, props } = data
     this.type = type
@@ -57,7 +55,6 @@ class Item {
   }
 
   /**
-   * @param {ItemData} data
    * @returns {Item}
    */
   static fromData (data) {

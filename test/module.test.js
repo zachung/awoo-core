@@ -1,3 +1,5 @@
+import ItemData from '../src/lib/ItemData'
+
 const { Chunk, Item, Layer } = require('../src/index')
 
 describe('測試模組載入', () => {
@@ -36,12 +38,12 @@ describe('測試 Item', () => {
   it('建構&解構', () => {
     const item = new Item({ type: 1, id: 1, x: 0, y: 15, props: { a: 'foo' } })
     const chunk = new Chunk(0, 0)
-    let { key, props: [x, y, chunkName, props] } = item.toData()
+    let [key, chunkName, x, y, props] = item.toData()
     if (key !== '1:1' || x !== 0 || y !== 15 || chunkName !== undefined || props.a !== 'foo') {
       throw new Error('Item 解構失敗')
     }
     item.chunk = chunk
-    let { props: [, , newChunkName, {}] } = item.toData()
+    let [, newChunkName] = item.toData()
     if (newChunkName !== '0E0S') {
       throw new Error('Item chunkName 解構失敗')
     }
@@ -49,6 +51,15 @@ describe('測試 Item', () => {
     if (newItem.type !== 1 || newItem.id !== 1 || newItem.x !== 0 || newItem.y !== 15) {
       console.log(newItem)
       throw new Error('Item 重建失敗')
+    }
+  })
+})
+
+describe('測試 ItemData', () => {
+  it('ItemData', () => {
+    const itemData = new ItemData(['2:0', '0E0S', 5, 16, { name: 'hello' }])
+    if (itemData.key !== '2:0' || itemData.x !== 5 || itemData.y !== 16 || itemData.chunkName !== '0E0S' || itemData.props.name !== 'hello') {
+      throw new Error('ItemData 取值失敗')
     }
   })
 })

@@ -1,36 +1,60 @@
 import Item from './Item'
 
-const kX = 0
-const kY = 1
-const kChunkName = 2
-const kProps = 3
+const kKey = 0
+const kChunkName = 1
+const kX = 2
+const kY = 3
+const kProps = 4
 
-/**
- * @property {string} key
- * @property {array} props
- */
-class ItemData {
+class ItemData extends Array {
+  constructor (props) {
+    super(...props)
+  }
+
+  get key () {
+    return this[kKey]
+  }
+
+  get x () {
+    return this[kX]
+  }
+
+  get y () {
+    return this[kY]
+  }
+
+  get chunkName () {
+    return this[kChunkName]
+  }
+
+  get props () {
+    return this[kProps]
+  }
+
   /**
    * @param {Item} item
    * @return ItemData
    */
   static toJson (item) {
-    return {
-      key: `${item.type}:${item.id}`,
-      props: [
-        item.x,
-        item.y,
-        item.chunk ? item.chunk.chunkName : undefined,
-        item.props
-      ],
-    }
+    const key = item.type ? `${item.type}:${item.id}` : ''
+    return new ItemData([
+      key,
+      item.chunk ? item.chunk.chunkName : undefined,
+      item.x,
+      item.y,
+      item.props
+    ])
   }
 
   /**
-   * @param {ItemData} itemData
+   * @param {string} key
+   * @param {string} chunkName
+   * @param {number} x
+   * @param {number} y
+   * @param {Object} props
+   * @return {Item}
    */
-  static fromJson (itemData) {
-    const { key, props } = itemData
+  static fromJson ([key, chunkName, x, y, props]) {
     // explode key, format: {type}:{id}
     let [type, id] = key.split(':')
     if (id === undefined) {
@@ -40,14 +64,7 @@ class ItemData {
     }
     type = parseInt(type)
     id = parseInt(id)
-    return new Item({
-      type,
-      id,
-      x: props[kX],
-      y: props[kY],
-      chunkName: props[kChunkName],
-      props: props[kProps]
-    })
+    return new Item({ type, id, x, y, chunkName, props })
   }
 }
 
