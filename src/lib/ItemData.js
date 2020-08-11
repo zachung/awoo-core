@@ -36,7 +36,7 @@ class ItemData extends Array {
    * @return ItemData
    */
   static toJson (item) {
-    const key = item.type ? `${item.type}:${item.id}` : ''
+    const key = (item.type || item.id) ? `${item.type}:${item.id}` : ''
     return new ItemData([
       key,
       item.chunk ? item.chunk.chunkName : undefined,

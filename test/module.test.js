@@ -40,8 +40,8 @@ describe('測試模組載入', () => {
 
 describe('測試 Item', () => {
   it('建構&解構', () => {
-    const item = new Item({ type: 1, id: 1, x: 0, y: 15, props: { a: 'foo' } })
-    const chunk = new Chunk(0, 0)
+    let item = new Item({ type: 1, id: 1, x: 0, y: 15, props: { a: 'foo' } })
+    let chunk = new Chunk(0, 0)
     let [key, chunkName, x, y, props] = item.toData()
     if (key !== '1:1' || x !== 0 || y !== 15 || chunkName !== undefined || props.a !== 'foo') {
       throw new Error('Item 解構失敗')
@@ -58,6 +58,11 @@ describe('測試 Item', () => {
     const airItem = Item.fromData(['0:0', '', 14, 14, {}])
     if (airItem.type !== 0 || airItem.id !== 0 || airItem.x !== 14 || airItem.y !== 14) {
       throw new Error('Item 重建失敗')
+    }
+    [key, , x, y] = new Item({ type: 0, id: 1, x: 0, y: 15 }).toData()
+    if (key !== '0:1' || x !== 0 || y !== 15) {
+      console.log(key, x, y)
+      throw new Error('Item type 0 解構失敗')
     }
   })
 })
