@@ -59,8 +59,8 @@ describe('測試 Item', () => {
     if (airItem.type !== 0 || airItem.id !== 0 || airItem.x !== 14 || airItem.y !== 14) {
       throw new Error('Item 重建失敗')
     }
-    [key, , x, y] = new Item({ type: 0, id: 1, x: 0, y: 15 }).toData()
-    if (key !== '0:1' || x !== 0 || y !== 15) {
+    [key, , x, y] = Item.fromData(['0:1', '', 14, 14, {}]).toData()
+    if (key !== '0:1' || x !== 14 || y !== 14) {
       console.log(key, x, y)
       throw new Error('Item type 0 解構失敗')
     }
