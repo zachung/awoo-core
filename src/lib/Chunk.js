@@ -30,11 +30,17 @@ class Chunk {
     this.offsetY = offsetY
   }
 
-  static fromName (chunkName) {
+  static offset (chunkName) {
     const re = /(\d+)(\w)(\d+)(\w)/
     let [, offsetX, xd, offsetY, yd] = chunkName.match(re)
-    offsetX = parseInt(xd === 'W' ? -offsetX : offsetX)
-    offsetY = parseInt(yd === 'N' ? -offsetY : offsetY)
+    return {
+      offsetX: parseInt(xd === 'W' ? -offsetX : offsetX),
+      offsetY: parseInt(yd === 'N' ? -offsetY : offsetY)
+    }
+  }
+
+  static fromName (chunkName) {
+    const { offsetX, offsetY } = Chunk.offset(chunkName)
     return new Chunk(offsetX, offsetY)
   }
 
@@ -43,23 +49,25 @@ class Chunk {
    * @returns {PromiseLike<any> | Promise<any>}
    */
   loadWorld (reader) {
-    return reader.load(this.chunkName, (layer, item) => {
-      if (layer === 'grounds') {
-        item.chunk = this
-        this.groundLayer.remove(item.x, item.y)
-        this.groundLayer.put(item, item.x, item.y)
-        return
-      }
-      this.addItem(item)
-    }).then(() => {
-      // 初始載入不需要關注
-      this.itemLayer.isDirty = false
-    })
+    return reader
+      .load(this.chunkName, (layer, item) => {
+        if (layer === 'grounds') {
+          item.chunk = this
+          this.groundLayer.remove(item.x, item.y)
+          this.groundLayer.put(item, item.x, item.y)
+          return
+        }
+        this.addItem(item)
+      })
+      .then(() => {
+        // 初始載入不需要關注
+        this.itemLayer.isDirty = false
+      })
   }
 
   getItem (offsetX, offsetY) {
-    let item = undefined
-    ;[this.itemLayer, this.groundLayer].some(layer => {
+    let item = undefined;
+    [this.itemLayer, this.groundLayer].some(layer => {
       item = layer.getItem(offsetX, offsetY)
       if (item) {
         return true

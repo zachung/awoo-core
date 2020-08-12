@@ -39,7 +39,7 @@ class ItemData extends Array {
     const key = (item.type || item.id) ? `${item.type}:${item.id}` : ''
     return new ItemData([
       key,
-      item.chunk ? item.chunk.chunkName : undefined,
+      item.chunk ? item.chunk.chunkName : item.chunkName,
       item.x,
       item.y,
       item.props

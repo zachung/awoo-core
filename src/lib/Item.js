@@ -1,10 +1,12 @@
 import ItemData from './ItemData'
+import Chunk from './Chunk'
 
 const ChunkSize = 32
 
 /**
  * @property {number} type
  * @property {number} id
+ * @property {string} chunkName
  * @property {Chunk} chunk
  * @property {string} color 字體顏色
  * @property {string} bgColor 背景顏色
@@ -12,9 +14,10 @@ const ChunkSize = 32
  */
 class Item {
   constructor (data) {
-    const { type, id, x, y, props } = data
+    const { type, id, x, y, chunkName, props } = data
     this.type = type
     this.id = id
+    this.chunkName = chunkName
     this.chunk = undefined
     this.props = props || {}
     if (x !== undefined) {
@@ -27,12 +30,28 @@ class Item {
     this.y = y
   }
 
+  get chunkOffsetX () {
+    if (this.chunk) {
+      return this.chunk.offsetX
+    }
+    const { offsetX } = Chunk.offset(this.chunkName)
+    return offsetX
+  }
+
+  get chunkOffsetY () {
+    if (this.chunk) {
+      return this.chunk.offsetY
+    }
+    const { offsetY } = Chunk.offset(this.chunkName)
+    return offsetY
+  }
+
   get globalX () {
-    return this.chunk.offsetX * ChunkSize + this.x
+    return this.chunkOffsetX * ChunkSize + this.x
   }
 
   get globalY () {
-    return this.chunk.offsetY * ChunkSize + this.y
+    return this.chunkOffsetY * ChunkSize + this.y
   }
 
   removeSelf () {
